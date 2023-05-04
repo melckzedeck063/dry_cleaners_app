@@ -16,12 +16,10 @@ import ProductCard from '../components/ProductCard';
 
 
 const categories =  [
-  {name : "vegetables", image :image1, id : 1 },
-  {name : "Fruits", image :image2, id : 2 },
-  {name : "Drinks", image :image3, id: 3 },
-  {name : "Bites", image : image4 , id : 4},
-  {name : "Fast food", image :image1, id: 5 },
-  {name : "Fruits", image :image2, id : 6 },
+  {name : "Mghwai Laundry", image :image1, id : 1, location : 'Nkuhungu' },
+  {name : "Nupe Laundry", image :image2, id : 2, location :  "Iyumbu" },
+  {name : "Darajani Cleaner", image :image3, id: 3, location :  "Makulu" },
+  {name : "La-liga Laundry", image : image4 , id : 4, location :  "Uhindini"},
 ]
 
 const CategoryScreen = () => {
@@ -91,14 +89,13 @@ const CategoryScreen = () => {
           data={categories}
           horizontal = {false}
           showsHorizontalScrollIndicator ={false}
-          numColumns={2}
           contentContainerStyle = {{
             paddingHorizontal : 1,
             paddingVertical : 5
           }}
           renderItem={(itemData) => {
             return (
-               <ProductCard name={itemData.item.name} image={itemData.item.image}  />
+               <ProductCard name={itemData.item.name} image={itemData.item.image} location={itemData.item.location}  />
             )
           }}
           keyExtractor={(item) => item.id}

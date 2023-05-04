@@ -17,12 +17,12 @@ import NavigationDrawer from '../components/NavigationDrawer'
 // import { SafeAreaView } from 'react-native-safe-area-context';
 
 const categories =  [
-  {name : "vegetables", image :image1, id : 1 },
-  {name : "Fruits", image :image2, id : 2 },
-  {name : "Drinks", image :image3, id: 3 },
-  {name : "Bites", image : image4 , id : 4},
-  {name : "Fast food", image :image1, id: 5 },
-  {name : "Fruits", image :image2, id : 6 },
+  {name : "Mghwai Laundry", image :image1, id : 1, location : 'Nkuhungu' },
+  {name : "Nupe Laundry", image :image2, id : 2, location :  "Iyumbu" },
+  {name : "Darajani Cleaner", image :image3, id: 3, location :  "Makulu" },
+  {name : "La-liga Laundry", image : image4 , id : 4, location :  "Uhindini"},
+  {name : "Smart Laundry", image :image1, id: 5, location :  "Kisasa" },
+  {name : "Ujasi Laundry", image :image2, id : 6, location :  "Coed  Ujasi" },
 ]
 
 const HomeScreen = () => {
@@ -55,7 +55,7 @@ const HomeScreen = () => {
     <>
       {/* <SafeAreaView className="" /> */}
     <View style={{ height : height, width : width, backgroundColor :  '#fff'}} className={`bg-slate-800 text-white relative px-1`}>
-      <View style={{height : responsiveHeight(2.8)}} className={`flex-row justify-between px-4 mt-14 mb-4 ${height<=500?Platform.select({android : 'mt-8'}) :height>700?Platform.select({android : 'mt-14'}) :Platform.select({android : 'mt-8'})}`} >
+      <View style={{height : responsiveHeight(3.8)}} className={`flex-row justify-between px-4 mt-14  ${Platform.select({android : 'mt-8'})} mb-4 ${height<=500?Platform.select({android : 'mt-6'}) :height>700?Platform.select({android : 'mt-10'}) :Platform.select({android : 'mt-8'})}`} >
 
         <View className="" >
             <TouchableOpacity className="rounded-lg bg-whitee h-8  w-8"
@@ -69,14 +69,14 @@ const HomeScreen = () => {
         <View className="" >
         <TouchableOpacity className="rounded-lg bg-whitee h-8  w-8" >
                 <Text>
-                <Ionicons name="notifications-sharp" size={32} color="#1c4966" />
+                   {/* <Ionicons name="notifications-sharp" size={32} color="#1c4966" /> */}
                 </Text>
         </TouchableOpacity>
         </View>
       </View>
 
       <View style={{alignSelf : 'center',height : responsiveHeight(12)}} className="my-2 flex-row space-x-6 justify-between w-full px-3" >
-      <View style={[style.section, style.card]} className="rounded-lg pt-2">
+      <View style={[style.section, style.card]} className="rounded-lg pt-1">
         <Text style={style.sectionHeader} className={`text-center text-white font-bold text-xl`}>Welcome!</Text>
         <Text style={style.sectionText} className={`text-center text-white`}>Find a nearby dry cleaner</Text>
         <TouchableOpacity style={{alignSelf: "center"}} className="bg-sky-500 px-4 py-1 w-7/12 rounded-lg my-2">
@@ -86,7 +86,7 @@ const HomeScreen = () => {
       </View>
       {/* <View style={[style.card, style.ad_card]} className={``}>
       </View> */}
-      <View style={{height : responsiveHeight(25) }} className={`w-full ${Platform.select({android : 'mt-2'})}`} >
+      <View style={{height : responsiveHeight(26) }} className={`w-full ${Platform.select({android : 'mt-2'})}`} >
         <View className="flex-row justify-between" >
           <View>
              <Text className={`text-slate-800 font-bold text-lg px-2 py-1.5 ${Platform.select({android : 'text-sm'})}`} >Our Services</Text>
@@ -111,11 +111,11 @@ const HomeScreen = () => {
                <CategoryCard name={itemData.item.name} image={itemData.item.image}  />
             )
           }}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id} 
          />
       </View>
 
-      <View style={{height : responsiveHeight(31)}} className={` mb-1.5 ${height> 750? '-mt-14' : '-mt-4'} ${height > 700 ?Platform.select({android : '-mt-8'}) : ''}`} >
+      <View style={{height : responsiveHeight(32)}} className={` mb-1.5 ${height> 750? '-mt-14' : '-mt-4'} ${height > 700 ?Platform.select({android : '-mt-8'}) : ''}`} >
         <View style={style.container} className="" >
          <View className="flex-row justify-between" >
           <View>
@@ -127,12 +127,12 @@ const HomeScreen = () => {
            <Text className={`text-amber-500 text-lg mr-1 ${Platform.select({android : 'text-sm mr-3'})}`} > See All </Text>  
            </TouchableOpacity> 
           </View>
-          <FlatList className="borderd-2 border-gray-400 rounded pr-3 pl-1" 
-           numColumns={2}
+          <FlatList className="borderd-2 border-gray-400 rounded pr-1.5 pl-1" 
+           
            data={categories}
            renderItem={(itemData) => {
             return (
-              <ProductCard name={itemData.item.name} image={itemData.item.image}  />
+              <ProductCard name={itemData.item.name} image={itemData.item.image} location={itemData.item.location}  />
             )
            }}
           />

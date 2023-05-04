@@ -22,14 +22,21 @@ const SettingsScreen = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-        headerShown : true
+        headerShown : true,
+        headerStyle: {
+          backgroundColor: '#1c4966',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
     })
   })
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.content}>
-        <View style={styles.section} className="mt-12">
+        <View style={styles.section} className="-mt-2">
           <Text style={styles.sectionTitle}>Account</Text>
           <TouchableOpacity style={styles.item}>
             <Text style={styles.itemText}>Edit Profile</Text>
@@ -50,10 +57,10 @@ const SettingsScreen = () => {
           <Text style={styles.itemText} className="flex flex-row justify-between border-b  border-slate-200">Location</Text>
           <Switch value={locationEnabled} onValueChange={handleLocationToggle} />
         </View>
-        <View style={styles.section} className="flex flex-row justify-between border-b  border-slate-200">
+        {/* <View style={styles.section} className="flex flex-row justify-between border-b  border-slate-200">
           <Text style={styles.itemText} className={`font-light `}>Auto-Complete Address</Text>
           <Switch value={autoCompleteEnabled} onValueChange={handleAutoCompleteToggle} />
-        </View>
+        </View> */}
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>About</Text>

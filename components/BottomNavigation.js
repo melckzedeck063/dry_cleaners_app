@@ -1,51 +1,85 @@
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import {Ionicons, AntDesign, Entypo}  from  '@expo/vector-icons'
-import AllProducts from '../screens/AllProducts';
-import HomeScreen from '../screens/HomeScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import SettingScreen from '../screens/SettingScreen';
+import * as React from 'react';
+import { Text, View } from 'react-native';
+import { FontAwesome, Ionicons, FontAwesome5, Foundation } from '@expo/vector-icons';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CartScreen from '../screens/CartScreen';
+import HomeScreen from '../screens/HomeScreen';
+import SettingsScreen from '../screens/SettingScreen';
 
-const Tab = createMaterialBottomTabNavigator();
 
-export default function BottomNavigator () {
+const Tab = createBottomTabNavigator();
+
+export default function BottomNavigator() {
   return (
-    <Tab.Navigator
-      initialRouteName="Feed"
-      activeColor="#e91e63"
-      barStyle={{ backgroundColor: '#fff' }}
-    >
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: 'Home',
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="home" color={color} size={26} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Cart"
-        component={CartScreen}
-        options={{
-          tabBarLabel: 'My Carts',
-          tabBarIcon: ({ color }) => (
-            <Entypo name="shopping-cart" color={color} size={26} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={SettingScreen}
-        options={{
-          tabBarLabel: 'Settings',
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="settings" color={color} size={26} />
-          ),
-        }}
-      />
-       
-    </Tab.Navigator>
+    // <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            if (route.name === 'Home') {
+              return (
+                <Ionicons
+                  name={
+                    focused
+                      ? 'home'
+                      : 'home-outline'
+                  }
+                  size={size}
+                  color={color}
+                  
+                />
+              );
+            } else if (route.name === 'Cart') {
+              return (
+                <FontAwesome
+                  name={focused ? 'shopping-cart' : 'shopping-cart'}
+                  size={size}
+                  color={color}
+                />
+              );
+            }
+            // else if (route.name === 'Settings') {
+            //     return (
+            //       <Ionicons
+            //         name={focused ? 'settings' : 'md-settings-outline'}
+            //         size={size}
+            //         color={color}
+            //       />
+            //     );
+            //   }
+              else if (route.name === 'Settings') {
+                return (
+                  <Ionicons
+                    name={focused ? 'settings' : 'settings-outline'}
+                    size={size}
+                    color={color}
+                  />
+                );
+              }
+          },
+          tabBarInactiveTintColor: 'pink',
+          tabBarActiveTintColor: 'white',
+          tabBarStyle : {
+            backgroundColor : '#1c4966',
+            opacity : 0.9
+          }
+          // tabBarBackground : {
+          //   backgroundColor : 'black'
+          // }
+          
+        })}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+        //   options={{ tabBarBadge: 3 }}
+        />
+        <Tab.Screen name="Cart" component={CartScreen} options={{ tabBarBadge: 3 }}
+         
+        />
+        {/* <Tab.Screen name="Orders" component={OrdersScreen} options={{ tabBarBadge: 3 }} /> */}
+        <Tab.Screen name="Settings" component={SettingsScreen} />
+      </Tab.Navigator>
+    // </NavigationContainer>
   );
 }

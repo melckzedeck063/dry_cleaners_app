@@ -25,6 +25,7 @@ export default function App() {
       <NavigationContainer>
           <Stack.Navigator
               screenOptions={{
+                headerShown : true,
                 headerStyle: {
                   backgroundColor: '#1c4966',
                 },
@@ -33,6 +34,7 @@ export default function App() {
                   fontWeight: 'bold',
                 },
               }}
+              headerMode="screen"
           >
              <Stack.Screen name='Welcome' component={WelcomeScreen} 
              />
@@ -70,7 +72,7 @@ export default function App() {
              options={{title : "Laundry Screen"}}
              />
              <Stack.Screen name='Cart' component={CartScreen} 
-             options={{title : "Cart Screen"}}
+             options={{title : 'My Bucket'}}
              />
           </Stack.Navigator>
        </NavigationContainer>
@@ -86,7 +88,10 @@ export const HomeTab   = () => {
   activeColor="#f0edf6"
   inactiveColor="#3e2465"
   barStyle={{ backgroundColor: '#1c4966', height : 32 }}
-  headerShown= {false}
+  // headerShown= {true}
+  screenOptions={{
+    headerShown: true,
+  }}
    >
   {/* ... */}
     </Tab.Navigator>

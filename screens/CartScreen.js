@@ -28,16 +28,23 @@ const CartScreen = () => {
 
     useLayoutEffect(() => {
         navigation.setOptions({
-            headerShown :  true
+            headerShown :  true,
+            headerStyle: {
+              backgroundColor: '#1c4966',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
         })
     })
   return (
     <View>
         {/* <SafeAreaView  /> */}
-      <View className="pt-16">
+      <View className="pt-5">
          {/* <Text>CartScreen</Text> */}
          <View style={{width : responsiveWidth(95), alignSelf : 'center'}} className="flex-row justify-between">
-            <Text className={`font-bold text-xl`}>My Bucket</Text>
+            {/* <Text className={`font-bold text-xl`}>My Bucket</Text> */}
          </View>
          <View style={{height : responsiveHeight(68)}} className="">
               <FlatList
