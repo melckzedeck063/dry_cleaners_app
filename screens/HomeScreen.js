@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, useWindowDimensions,TextInput, StyleSheet, ScrollView, FlatList, Platform } from 'react-native'
+import { View, Text, TouchableOpacity, useWindowDimensions,TouchableWithoutFeedback, StyleSheet, ScrollView, FlatList, Platform } from 'react-native'
 import React, { useLayoutEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import {Controller, useForm} from 'react-hook-form'
@@ -31,6 +31,12 @@ const HomeScreen = () => {
     const {height, width} =  useWindowDimensions()
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+    const handleOutsidePress = (event) => {
+      // if (drawerRef.current && !drawerRef.current.contains(event.target)) {
+        // }
+        // console.log('clicked')
+          setIsDrawerOpen(false);
+    };
 
     // console.log(height);
    
@@ -48,13 +54,13 @@ const HomeScreen = () => {
 
     const { register, reset, control, handleSubmit, formState: { errors, isDirty, isValid } } =  useForm();
  
-   
-
 
   return (
     <>
       {/* <SafeAreaView className="" /> */}
-    <View style={{ height : height, width : width, backgroundColor :  '#fff'}} className={`bg-slate-800 text-white relative px-1`}>
+    <TouchableWithoutFeedback onPress={handleOutsidePress} style={{ height : height, width : width, backgroundColor :  '#fff'}} className={`bg-slate-800 text-white relative px-1`}>
+      <View>
+
       <View style={{height : responsiveHeight(3.8)}} className={`flex-row justify-between px-4 mt-14  ${Platform.select({android : 'mt-8'})} mb-4 ${height<=500?Platform.select({android : 'mt-6'}) :height>700?Platform.select({android : 'mt-10'}) :Platform.select({android : 'mt-8'})}`} >
 
         <View className="" >
@@ -69,7 +75,7 @@ const HomeScreen = () => {
         <View className="" >
         <TouchableOpacity className="rounded-lg bg-whitee h-8  w-8" >
                 <Text>
-                   {/* <Ionicons name="notifications-sharp" size={32} color="#1c4966" /> */}
+                   <Ionicons name="notifications-sharp" size={32} color="#1c4966" />
                 </Text>
         </TouchableOpacity>
         </View>
@@ -139,17 +145,17 @@ const HomeScreen = () => {
         </View>
       </View>
 
-      <View style={[style.drawer, isDrawerOpen ? { left: 0 } : { left: -250 }]} className="bg-slatee-700">
-          <TouchableOpacity onPress={() => setIsDrawerOpen(false)} className="pt-4 my-2 right-0">
-            {/* <Ionicons name="close" size={48} color="red" /> */}
+      <View  style={[style.drawer, isDrawerOpen ? { left: 0 } : { left: -250 }]} className="bg-slatee-700 -ml-1 relative">
+          {/* <TouchableOpacity onPress={() => setIsDrawerOpen(false)} className="pt-3  my-2 mr-2">
             {Platform.select({android : <Ionicons name="close" size={42} color="red" /> })}
             {Platform.select({ios: <Ionicons name="close" size={42} color="red" /> })}
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <NavigationDrawer />
       </View>
+      </View>
 
-    </View>
+    </TouchableWithoutFeedback>
     </>
   )
 }
@@ -183,12 +189,19 @@ const style = StyleSheet.create({
     top: 0,
     bottom: 0,
     width: responsiveWidth(60),
-    // height : responsiveHeight(80),
+    height : responsiveHeight(100),
     backgroundColor :  '#1c4966',
     padding: 20,
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-start",
+  },
+  drawerContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    width: 300,
   },
 })
 

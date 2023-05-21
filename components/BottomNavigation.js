@@ -57,10 +57,10 @@ export default function BottomNavigator() {
                 );
               }
           },
-          tabBarInactiveTintColor: 'pink',
-          tabBarActiveTintColor: 'white',
+          tabBarInactiveTintColor: 'grey',
+          tabBarActiveTintColor: '#1c4966',
           tabBarStyle : {
-            backgroundColor : '#1c4966',
+            backgroundColor : '#fff',
             opacity : 0.9
           }
           // tabBarBackground : {

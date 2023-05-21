@@ -16,7 +16,7 @@ const NavigationDrawer = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
      {/* <Text className="text-white">Drawer Content</Text> */}
-     <View className="my-1 pt-2 mb-10">
+     <View className="my-1 pt-14 mb-10 ">
 
      <View className="border-b border-slate-300 my-2">
                 <Text className={`text-lg font-bold text-white`}>Services & Dry Cleaners</Text>

@@ -1,17 +1,61 @@
 import { View, Text, Form, TextInput, useWindowDimensions, TouchableOpacity, KeyboardAvoidingView, ScrollView, Platform, Image } from 'react-native'
-import React, { useContext, useEffect, useLayoutEffect, useRef } from 'react'
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { useForm, Controller, useController, useWatch } from 'react-hook-form';
 // import { yupResolver } from '@hookform/resolvers/yup';
 import  { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 // import * as Yup from 'yup';
 import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions'
+import { useDispatch } from 'react-redux';
+import *  as SecureStore from 'expo-secure-store';
+import { signInUser } from '../store/actions/user_actions';
 
 
 const LoginScreen = () => {
     const navigation = useNavigation();
+    const dispatch =  useDispatch();
+    const [reload,setReload] = useState(0);
     const { width, height } = useWindowDimensions();
 
+
+    const checkUser = async () =>  {
+      const storage = await  SecureStore.getItemAsync('token');
+     const authToken =  JSON.parse(storage)
+    //  console.log(authToken)
+      if(authToken !== "" && authToken !==  undefined && authToken !== null){
+          // console.log(authToken)
+          // setTimeout(() => {
+          //   if(reload < 3){
+          //     setModalVisible(true)
+          //   }
+          // }, 1000);
+          setTimeout(() => {
+            navigation.navigate('HomeTab')
+          }, 3000);
+        }
+        else {
+          console.log("nothing to connsole")
+        }
+    }
+// console.log(message)
+// setTimeout(() => {
+//   checkUser();
+//   }, 6000);
+
+  // setTimeout(() => {
+  //   if(reload < 5 ){
+  //     setReload(reload => reload + 1)
+  //   } 
+  //  }, 1000);
+
+
+  //   useEffect(() => {
+  //     if(reload < 4){
+  //       setTimeout(() => {
+  //         checkUser()
+  //       }, 2000);
+  //     }
+  //   })
 
     const {  handleSubmit,setValue, control, reset, formState: { errors, isValid, isDirty } } = useForm({
         defaultValues  : {
@@ -23,13 +67,18 @@ const LoginScreen = () => {
       })
 
       const onSubmit = data => {
-        console.log(data)
-        // navigation.navigate('HomeTab')
+        // console.log(data)
+        dispatch( signInUser(data) )
+
+        setTimeout(() => {
+          checkUser()
+        }, 3000)
+
       }
 
-      setTimeout(() => {
-         navigation.navigate('HomeTab')
-      }, 2000);
+      // setTimeout(() => {
+      //    navigation.navigate('HomeTab')
+      // }, 2000);
 
       useLayoutEffect(() => 
     {

@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useLayoutEffect } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
+import { responsiveHeight,  responsiveWidth } from 'react-native-responsive-dimensions';
 
 const SettingsScreen = () => {
   const [notificationsEnabled, setNotificationsEnabled] = React.useState(false);
@@ -34,9 +35,9 @@ const SettingsScreen = () => {
   })
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView  style={styles.container}>
       <View style={styles.content}>
-        <View style={styles.section} className="-mt-2">
+        <View style={styles.section} className="-mt-3">
           <Text style={styles.sectionTitle}>Account</Text>
           <TouchableOpacity style={styles.item}>
             <Text style={styles.itemText}>Edit Profile</Text>
@@ -89,6 +90,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    height : responsiveHeight(90),
+    marginBottom : 10
   },
   header: {
     flexDirection: 'row',

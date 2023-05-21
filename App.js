@@ -14,6 +14,8 @@ import SettingScreen from './screens/SettingScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import LaundryScreen from './screens/LaundryScreen';
 import CartScreen from './screens/CartScreen';
+import { Provider } from 'react-redux';
+import store from './store/store';
 
 const Stack =  createNativeStackNavigator();
 const Tab =  createMaterialBottomTabNavigator();
@@ -22,6 +24,7 @@ export default function App() {
   return (
     <>
       <StatusBar style='auto' />
+      <Provider store={store}>
       <NavigationContainer>
           <Stack.Navigator
               screenOptions={{
@@ -76,6 +79,7 @@ export default function App() {
              />
           </Stack.Navigator>
        </NavigationContainer>
+      </Provider>
     </>
   );
 }

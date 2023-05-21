@@ -6,6 +6,8 @@ import { useForm, FormProvider, SubmitHandler, Controller } from 'react-hook-for
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { signUpUser } from '../store/actions/user_actions';
+import { useDispatch } from 'react-redux';
 
 
 
@@ -13,6 +15,7 @@ const SIgnUpScreen = () => {
 
     const navigation = useNavigation();
     const { width, height } = useWindowDimensions();
+    const dispatch = useDispatch();
 
     const { register, reset, control, handleSubmit, formState: { errors, isDirty, isValid } } = useForm({
         defaultValues :  {
@@ -28,7 +31,9 @@ const SIgnUpScreen = () => {
       
       const onSubmit = data => {
           console.log(data);
-        //   dispatch( signUpUser(data) )
+          // dispatch( signUpUser(data) )
+
+          reset();
           
       }
 
@@ -46,7 +51,7 @@ const SIgnUpScreen = () => {
 
 
   return (
-    <View style={{height  : responsiveHeight(100), paddingVertical : 15}} className="bg-slate-100">
+    <View >
       <KeyboardAwareScrollView >
         <ScrollView>
         {/* <LinearGradient colors={['transparent', '#F54749']} className="h-full" > */}
