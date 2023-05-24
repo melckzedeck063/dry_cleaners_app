@@ -71,7 +71,7 @@ const LoginScreen = () => {
         dispatch( signInUser(data) )
 
         setTimeout(() => {
-          // checkUser()
+          checkUser()
         }, 3000)
 
       }
