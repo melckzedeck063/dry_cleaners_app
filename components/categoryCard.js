@@ -1,8 +1,9 @@
 import { View, Text , StyleSheet, Image, TouchableOpacity, Platform} from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
-import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions'
+import {responsiveHeight, responsiveWidth,responsiveFontSize} from 'react-native-responsive-dimensions'
 import image from '../assets/images/pexels-polina-tankilevitch-4440521.jpg';
+import { IMAGE_URL } from '../store/URL'
 
 const CategoryCard = (props) => {
 
@@ -15,8 +16,8 @@ const CategoryCard = (props) => {
     }) }
     >
       <View style={style.category}>
-            <Image style={{width : responsiveWidth(26)}} source={props.image} className="h-24 w-32 overflow-hidden"  />
-              <Text style={style.categoryTitle}>Wash & Fold</Text>
+            <Image style={{width : responsiveWidth(30)}} source={{uri :  `${IMAGE_URL}/${props.image}`}} className="h-24 w-32 overflow-hidden"  />
+              <Text style={style.categoryTitle} className={`pt-2`}>{props.name}</Text>
             </View>
     </TouchableOpacity>
   )
@@ -34,7 +35,8 @@ const style = StyleSheet.create({
       shadowOpacity: 0.25,
       shadowRadius : 8,
       width  : '90%',
-      borderRadius  :  8
+      borderRadius  :  8,
+      marginRight  : 2
      },
      categoriesContainer: {
       marginBottom: 24,
@@ -62,7 +64,7 @@ const style = StyleSheet.create({
       marginBottom: 8,
     },
     categoryTitle: {
-      fontSize: 12,
+      fontSize: responsiveFontSize(1.5),
       fontWeight: 'bold',
       textAlign: 'center',
     },

@@ -30,8 +30,8 @@ const SIgnUpScreen = () => {
       })
       
       const onSubmit = data => {
-          console.log(data);
-          // dispatch( signUpUser(data) )
+          // console.log(data);
+          dispatch( signUpUser(data) )
 
           reset();
           

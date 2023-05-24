@@ -71,13 +71,14 @@ const LoginScreen = () => {
         dispatch( signInUser(data) )
 
         setTimeout(() => {
-          checkUser()
+          // checkUser()
         }, 3000)
 
       }
 
       // setTimeout(() => {
-      //    navigation.navigate('HomeTab')
+      //   checkUser()
+      //   //  navigation.navigate('HomeTab')
       // }, 2000);
 
       useLayoutEffect(() => 

@@ -16,6 +16,8 @@ import LaundryScreen from './screens/LaundryScreen';
 import CartScreen from './screens/CartScreen';
 import { Provider } from 'react-redux';
 import store from './store/store';
+import LaundryForm from './screens/LaundryForm';
+import CategoryForm from './screens/CategoryForm';
 
 const Stack =  createNativeStackNavigator();
 const Tab =  createMaterialBottomTabNavigator();
@@ -76,6 +78,12 @@ export default function App() {
              />
              <Stack.Screen name='Cart' component={CartScreen} 
              options={{title : 'My Bucket'}}
+             />
+             <Stack.Screen name='LaundryForm' component={LaundryForm}
+             options={{title :'Register Laundry'}} 
+             />
+             <Stack.Screen name='CategoryForm' component={CategoryForm}
+             options={{title :'Register Category'}} 
              />
           </Stack.Navigator>
        </NavigationContainer>

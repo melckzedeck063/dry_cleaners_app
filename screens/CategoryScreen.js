@@ -13,6 +13,7 @@ import image4 from '../assets/images/pexels-pixabay-325876.jpg';
 // import categoryCard from '../components/categoryCard';
 // import CategoryCard from '../components/categoryCard';
 import ProductCard from '../components/ProductCard';
+import { IMAGE_URL } from '../store/URL'
 
 
 const categories =  [
@@ -27,7 +28,7 @@ const CategoryScreen = () => {
     const {params : {props}} =  useRoute();
     const {width, height} =  useWindowDimensions();
 
-    // console.log(height);
+    console.log(props);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -40,7 +41,7 @@ const CategoryScreen = () => {
      {/* <ScrollView   > */}
      <View style={{backgroundColor :  '#fff'}} className="h-full">
      <View className="relative">
-        <Image style={{height : responsiveHeight(31)}} source={props.image} className="w-full" />
+        <Image style={{height : responsiveHeight(31)}} source={{uri : `${IMAGE_URL}/${props.image}`}} className="w-full" />
         <View className='absolute inset-0 bg-black/60' ></View>
         <View className="absolute bottom-2 px-2">
             {/* <Text className={`font-bold my-1.5 text-2xl capitalize text-white ${Platform.select({android : 'text-xl'})}`}>{props.name}</Text> */}
@@ -52,7 +53,7 @@ const CategoryScreen = () => {
         <Text className={`font-bold capitalize text-slate-800 text-xl py-2 ${Platform.select({android : 'text-lg'})}`}>{props.name}</Text>
         
         <TouchableOpacity className="px-2 h-9 -p-1 bg-orange-400 flex flex-row space-x-2 rounded-lg"
-          onPress={()  => navigation.navigate('NewProduct',{
+          onPress={()  => navigation.navigate('LaundryForm',{
             props
           }) }
         >

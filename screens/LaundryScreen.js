@@ -12,6 +12,7 @@ import image4 from '../assets/images/pexels-pixabay-325876.jpg';
 // import CategoryCard from '../components/categoryCard';
 import ProductCard from '../components/ProductCard';
 import ServiceCard from '../components/ServiceCard';
+import { IMAGE_URL } from '../store/URL';
 
 const categories =  [
     {name : "T-shirt", image :image1, id : 1, price :   500 },
@@ -27,6 +28,8 @@ const LaundryScreen = () => {
     const {width, height} =  useWindowDimensions();
     const {params : {props} } =  useRoute();
 
+    console.log(props);
+
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -38,7 +41,7 @@ const LaundryScreen = () => {
      {/* <ScrollView   > */}
      <View style={{backgroundColor :  '#fff'}} className="h-full">
      <View className="relative">
-        <Image style={{height : responsiveHeight(30)}} source={props.image} className="w-full" />
+        <Image style={{height : responsiveHeight(30)}} source={{uri  : `${IMAGE_URL}/${props.image}`}} className="w-full" />
         <View className='absolute inset-0 bg-black/60' ></View>
         <View className="absolute bottom-2 px-2">
             {/* <Text className={`font-bold my-1.5 text-2xl capitalize text-white ${Platform.select({android : 'text-xl'})}`}>{props.name}</Text> */}

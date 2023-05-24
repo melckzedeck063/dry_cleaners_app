@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, useWindowDimensions,TouchableWithoutFeedback, StyleSheet, ScrollView, FlatList, Platform } from 'react-native'
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import {Controller, useForm} from 'react-hook-form'
 import { Ionicons, FontAwesome, FontAwesome5, Entypo, MaterialCommunityIcons }  from '@expo/vector-icons'
@@ -14,6 +14,9 @@ import image4 from '../assets/images/pexels-pixabay-325876.jpg';
 import CategoryCard from '../components/categoryCard';
 import ProductCard from '../components/ProductCard';
 import NavigationDrawer from '../components/NavigationDrawer'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllLaundry } from '../store/actions/laundry_actions'
+import { getAllCategories } from '../store/actions/category_action'
 // import { SafeAreaView } from 'react-native-safe-area-context';
 
 const categories =  [
@@ -28,8 +31,16 @@ const categories =  [
 const HomeScreen = () => {
     
     const navigation =  useNavigation();
+    const  dispatch =  useDispatch();
     const {height, width} =  useWindowDimensions()
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [reload, setReload] =  useState(0)
+
+    const our_categories = useSelector(state => state.category);
+    // console.log(our_categories.categories);
+
+    const laundries =  useSelector(state => state.laundry);
+    // console.log(laundries.all_laundry);
 
     const handleOutsidePress = (event) => {
       // if (drawerRef.current && !drawerRef.current.contains(event.target)) {
@@ -39,9 +50,20 @@ const HomeScreen = () => {
     };
 
     // console.log(height);
+    setTimeout(() => {
+      if(reload  <  5){
+       setReload(reload + 1)
+      }
+     }, 700);
    
 
-    useLayoutEffect(() => 
+     useEffect(() => {
+      if(our_categories &&  our_categories.categories.length < 1 &&  reload <=3){
+        dispatch( getAllCategories() )
+      }
+     })
+
+     useLayoutEffect(() => 
     {
         navigation.setOptions({
             headerShown : false,
@@ -51,6 +73,16 @@ const HomeScreen = () => {
             headerTintColor : "white"
         })
     })
+   
+     useEffect(() => {
+       if(laundries && laundries.all_laundry.length <= 1 && reload <=  3){
+         dispatch( getAllLaundry() )
+       }
+     },[laundries, reload])
+     
+   
+
+    
 
     const { register, reset, control, handleSubmit, formState: { errors, isDirty, isValid } } =  useForm();
  
@@ -103,22 +135,29 @@ const HomeScreen = () => {
            <Text className={`text-amber-500 text-lg mr-1 ${Platform.select({android : 'text-sm mr-2'})}`}  > See All </Text>  
            </TouchableOpacity>
         </View>
-        
-         <FlatList 
-          data={categories}
-          horizontal = {true}
-          showsHorizontalScrollIndicator ={false}
-          contentContainerStyle = {{
-            paddingHorizontal : 1,
-            paddingVertical : 5
-          }}
-          renderItem={(itemData) => {
-            return (
-               <CategoryCard name={itemData.item.name} image={itemData.item.image}  />
-            )
-          }}
-          keyExtractor={(item) => item.id} 
-         />
+        {
+          our_categories?.categories?.data?.data ?(
+            <FlatList 
+             data={our_categories.categories.data.data}
+             horizontal = {true}
+             showsHorizontalScrollIndicator ={false}
+             contentContainerStyle = {{
+               paddingHorizontal : 1,
+               paddingVertical : 5
+             }}
+             renderItem={(itemData) => {
+               return (
+                  <CategoryCard name={itemData.item.categoryName} image={itemData.item.photo} desc =  {itemData.item.description} id={itemData.item._id}  />
+               )
+             }}
+             keyExtractor={(item) => item._id} 
+            />
+
+          )
+           :  
+           <>
+           </>
+        }
       </View>
 
       <View style={{height : responsiveHeight(32)}} className={` mb-1.5 ${height> 750? '-mt-14' : '-mt-4'} ${height > 700 ?Platform.select({android : '-mt-8'}) : ''}`} >
@@ -133,15 +172,26 @@ const HomeScreen = () => {
            <Text className={`text-amber-500 text-lg mr-1 ${Platform.select({android : 'text-sm mr-3'})}`} > See All </Text>  
            </TouchableOpacity> 
           </View>
-          <FlatList className="borderd-2 border-gray-400 rounded pr-1.5 pl-1" 
-           
-           data={categories}
-           renderItem={(itemData) => {
-            return (
-              <ProductCard name={itemData.item.name} image={itemData.item.image} location={itemData.item.location}  />
+          {
+            laundries?.all_laundry?.data?.data ? (
+
+              <FlatList className="borderd-2 border-gray-400 bg-white rounded pr-1.5 pl-1" 
+               
+               data={laundries.all_laundry.data.data}
+               renderItem={(itemData) => {
+                return (
+                  <ProductCard name={itemData.item.laundryName} image={itemData.item.photo} location={itemData.item.location} phone = {itemData.item.telephone}  />
+                )
+               }}
+              />
             )
-           }}
-          />
+            : 
+            <>
+            <View>
+              <Text style={{fontSize  : responsiveFontSize(2.5)}} className={`text-center text-sky-500 text-lg animate-pulse pt-6`} >Loading  ....</Text>
+            </View>
+            </>
+          }
         </View>
       </View>
 
