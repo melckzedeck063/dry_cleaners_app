@@ -42,7 +42,7 @@ const CategoryScreen = () => {
     }, 1000);
 
     useEffect(() => {
-      if(laundries  && laundries.category_laundry && reload < 4){
+      if(laundries  && laundries.category_laundry && reload < 3){
         dispatch( getCategoryLaundry(props.id) )
       }
     })
@@ -96,7 +96,7 @@ const CategoryScreen = () => {
       <View style={{height : responsiveHeight(41)}} className={`w-full mb-3 px-2.5 ${Platform.select({android : 'mt-2'})}`} >
         <View className="flex-row justify-between" >
           <View>
-             <Text className={`text-slate-800 font-bold text-xl px-2 -mt-1 pb-1.5 ${Platform.select({android : 'text-lg'})}`} >Available Dry Cleaners</Text>
+             <Text className={`text-slate-800 font-bold text-xl px-2 -mt-1 pb-1.5 ${Platform.select({android : 'text-lg'})}`} >Available Service providers</Text>
           </View>
            {/* <TouchableOpacity
             onPress={() =>  navigation.navigate('AllCategories')}
@@ -120,7 +120,7 @@ const CategoryScreen = () => {
               <ProductCard name={itemData.item.laundryName} image={itemData.item.photo} location={itemData.item.location} phone = {itemData.item.telephone}  />
             )
           }}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item._id}
          />
             </>
           )

@@ -30,9 +30,9 @@ const LaundryScreen = () => {
     const {params : {props} } =  useRoute();
 
     const laundries  =  useSelector(state => state.laundry);
-    console.log(laundries.category_laundry);
+    // console.log(laundries.category_laundry);
 
-    // console.log(props);
+    console.log(props);
 
 
     useLayoutEffect(() => {

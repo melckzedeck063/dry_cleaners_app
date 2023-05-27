@@ -75,7 +75,7 @@ const HomeScreen = () => {
     })
    
      useEffect(() => {
-       if(laundries && laundries.all_laundry.length <= 1 && reload <=  3){
+       if(laundries && laundries.all_laundry.length < 1 && reload <=  3){
          dispatch( getAllLaundry() )
        }
      },[laundries, reload])
@@ -180,7 +180,7 @@ const HomeScreen = () => {
                data={laundries.all_laundry.data.data}
                renderItem={(itemData) => {
                 return (
-                  <ProductCard name={itemData.item.laundryName} image={itemData.item.photo} location={itemData.item.location} phone = {itemData.item.telephone}  />
+                  <ProductCard name={itemData.item.laundryName} image={itemData.item.photo} location={itemData.item.location} phone = {itemData.item.telephone} id={itemData.item._id}  />
                 )
                }}
               />

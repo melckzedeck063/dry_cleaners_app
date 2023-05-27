@@ -9,6 +9,7 @@ import { IMAGE_URL } from '../store/URL'
 const ProductCard = (props) => {
   const navigation =  useNavigation();
 
+  console.log(props)
   
 
   return (

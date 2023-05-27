@@ -15,7 +15,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import  {responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensions';
 import { useWindowDimensions } from 'react-native';
 import { BASE_URL } from '../store/URL';
-import { createLaundry } from '../store/actions/laundry_actions';
 
 const ServiceForm = () => {
     
@@ -125,17 +124,17 @@ const ServiceForm = () => {
         <Controller
         control={control}
         rules={{
-            required: {value : true, message : "Laundry name is required"},
+            required: {value : true, message : "product name is required"},
         }}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput  className={`rounded-md bg-slate-100 px-4 py-2.5 ${Platform.select({android : 'py-1.5'})} border-2 ${errors.laundryName? 'border-red-500' :  'border-slate-300'}`}
-          placeholder="Enter laundry name"
+          <TextInput  className={`rounded-md bg-slate-100 px-4 py-2.5 ${Platform.select({android : 'py-1.5'})} border-2 ${errors.serviceName? 'border-red-500' :  'border-slate-300'}`}
+          placeholder="Enter product name"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
           />
         )}
-        name="laundryName"
+        name="serviceName"
       />
       </View>
 
