@@ -13,7 +13,7 @@ LAUNDRY_API.interceptors.request.use(async(req)  =>{
     
     if (authToken !== null || authToken !== undefined) {
         // console.log(storage)
-        req.headers.authorization = `Bearer bearer ${authToken.token}`
+        req.headers.Authorization = `Bearer bearer ${authToken.token}`
     }
     return req;
 })
@@ -42,13 +42,26 @@ export const createLaundry = createAsyncThunk('new/laundry', async(values) => {
 
 export const getAllLaundry = createAsyncThunk('all/laundry', async()  =>{
     try{
-        const response =  await LAUNDRY_API.get('/all_laundry');
+        const response =  await LAUNDRY_API.get('/all_laundry?sort=-date_created');
 
-        console.log(response.data);
+        // console.log(response.data);
         return response.data
     }
     catch(error){
-        console.error(error);
+        console.log(error);
         return  error.message
+    }
+})
+
+export const getCategoryLaundry =  createAsyncThunk('category/laundry', async(id) => {
+    try{
+        const response = await LAUNDRY_API.get(`/category_laundry/${id}?sort=-date_created`);
+
+        // console.log(response.data);
+        return response.data
+    }
+    catch(error){
+        console.log(error);
+        return error.message
     }
 })

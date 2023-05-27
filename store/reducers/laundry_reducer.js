@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createLaundry, getAllLaundry } from "../actions/laundry_actions";
+import { createLaundry, getAllLaundry, getCategoryLaundry } from "../actions/laundry_actions";
 
 
 const laundrySlice  =   createSlice({
@@ -8,6 +8,7 @@ const laundrySlice  =   createSlice({
         laundry : null,
         all_laundry  :  [],
         current_laundry : null,
+        category_laundry :[],
         status : "",
         message : ""
     },
@@ -46,6 +47,19 @@ const laundrySlice  =   createSlice({
             state.message = "laundries found"
         })
         .addCase(getAllLaundry.rejected, (state,action)  => {
+            state.status = "Failed",
+            state.message ='Request failed' ,
+            state.error = action.error.message
+        })
+        .addCase(getCategoryLaundry.pending, (state,action) => {
+            state.status = "Loading"
+        })
+        .addCase(getCategoryLaundry.fulfilled, (state,action) => {
+            state.status  = "Successfull",
+            state.category_laundry =  action.payload,
+            state.message = "laundries found"
+        })
+        .addCase(getCategoryLaundry.rejected, (state,action)  => {
             state.status = "Failed",
             state.message ='Request failed' ,
             state.error = action.error.message

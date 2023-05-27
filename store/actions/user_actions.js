@@ -21,18 +21,19 @@ AUTH_API.interceptors.request.use(async (req) => {
 
 
 export const signInUser = createAsyncThunk ("user/login", async (values) => {
-    console.log("values : " , values)
+    // console.log("values : " , values)
     try{
         const  response =   await  axios.post(`${BASE_URL}/user/login`, {
           email  :  values.username,
           password :   values.password
         })
-        // console.log(response.data)
+        console.log(response.data)
         await SecureStore.setItemAsync('token', JSON.stringify(response.data))
          return  response.data
     }
     catch(error){
-        console.log(error.response.data)
+        console.log(error)
+        return  error.message
     }
 })
 

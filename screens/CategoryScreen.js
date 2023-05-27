@@ -1,9 +1,9 @@
 import { View, Text, Image, useWindowDimensions, TouchableOpacity, ScrollView, Platform, FlatList } from 'react-native'
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import {FontAwesome, Ionicons, MaterialCommunityIcons} from '@expo/vector-icons'
-import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions';
+import {responsiveFontSize, responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions';
 
 
 import image1 from '../assets/images/pexels-pramod-tiwari-13602888.jpg';
@@ -14,6 +14,8 @@ import image4 from '../assets/images/pexels-pixabay-325876.jpg';
 // import CategoryCard from '../components/categoryCard';
 import ProductCard from '../components/ProductCard';
 import { IMAGE_URL } from '../store/URL'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCategoryLaundry } from '../store/actions/laundry_actions'
 
 
 const categories =  [
@@ -25,10 +27,27 @@ const categories =  [
 
 const CategoryScreen = () => {
     const navigation =  useNavigation();
+    const dispatch  = useDispatch();
     const {params : {props}} =  useRoute();
     const {width, height} =  useWindowDimensions();
+    const [reload, setReload] = useState(0);
 
-    console.log(props);
+    const laundries  = useSelector (state => state.laundry);
+    // console.log(laundries.category_laundry);
+
+    setTimeout(() => {
+      if(reload <  5){
+        setReload(reload => reload + 1);
+      }
+    }, 1000);
+
+    useEffect(() => {
+      if(laundries  && laundries.category_laundry && reload < 4){
+        dispatch( getCategoryLaundry(props.id) )
+      }
+    })
+
+    // console.log(props);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -85,9 +104,11 @@ const CategoryScreen = () => {
            <Text className={`text-amber-500 text-lg mr-1 ${Platform.select({android : 'text-sm mr-2'})}`}  > See All </Text>  
            </TouchableOpacity> */}
         </View>
-        
-         <FlatList 
-          data={categories}
+        {
+          laundries?.category_laundry?.data?.laundry ? (
+            <>
+            <FlatList 
+          data={laundries.category_laundry.data.laundry}
           horizontal = {false}
           showsHorizontalScrollIndicator ={false}
           contentContainerStyle = {{
@@ -96,11 +117,19 @@ const CategoryScreen = () => {
           }}
           renderItem={(itemData) => {
             return (
-               <ProductCard name={itemData.item.name} image={itemData.item.image} location={itemData.item.location}  />
+              <ProductCard name={itemData.item.laundryName} image={itemData.item.photo} location={itemData.item.location} phone = {itemData.item.telephone}  />
             )
           }}
           keyExtractor={(item) => item.id}
          />
+            </>
+          )
+           : 
+           <View>
+            <Text style={{fontSize : responsiveFontSize(1.5)}} className='text-center font-medium py-6 text-sky-500 animate-pulse'>Loading ...... </Text>
+           </View>
+        }
+         
       </View>
 
      </View>

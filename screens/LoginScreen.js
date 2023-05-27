@@ -76,10 +76,10 @@ const LoginScreen = () => {
 
       }
 
-      // setTimeout(() => {
-      //   checkUser()
-      //   //  navigation.navigate('HomeTab')
-      // }, 2000);
+      setTimeout(() => {
+        checkUser()
+        //  navigation.navigate('HomeTab')
+      }, 2000);
 
       useLayoutEffect(() => 
     {

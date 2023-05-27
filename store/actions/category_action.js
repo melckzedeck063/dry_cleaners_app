@@ -11,7 +11,7 @@ CATEGORY_API.interceptors.request.use(async(req) =>  {
     
     if (authToken !== null || authToken !== undefined) {
         // console.log(storage)
-        req.headers.authorization = `Bearer bearer ${authToken.token}`
+        req.headers.Authorization = `Bearer bearer ${authToken.token}`
     }
     return req;
 })
@@ -25,7 +25,7 @@ export  const registerCategory  = createAsyncThunk ( 'new/category', async(value
             photo : values.photo,
         })
 
-        console.log(response.data);
+        // console.log(response.data);
         return  response.data
     }
     catch(error){
@@ -36,13 +36,13 @@ export  const registerCategory  = createAsyncThunk ( 'new/category', async(value
 
 export  const getAllCategories =  createAsyncThunk('all/categ', async () => {
     try{
-        const  response =  await CATEGORY_API.get('/categories');
+        const  response =  await CATEGORY_API.get(`/categories?sort=-created_at`);
 
-        console.log(response.data);
+        // console.log(response);
         return  response.data
     }
     catch(error){
-        console.error(error)
+        console.log(error.response)
         return   error.message
     }
 })

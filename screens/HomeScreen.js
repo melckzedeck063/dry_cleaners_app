@@ -54,7 +54,7 @@ const HomeScreen = () => {
       if(reload  <  5){
        setReload(reload + 1)
       }
-     }, 700);
+     }, 1000);
    
 
      useEffect(() => {
@@ -130,7 +130,7 @@ const HomeScreen = () => {
              <Text className={`text-slate-800 font-bold text-lg px-2 py-1.5 ${Platform.select({android : 'text-sm'})}`} >Our Services</Text>
           </View>
            <TouchableOpacity
-            // onPress={() =>  navigation.navigate('AllServices')}
+            onPress={() => dispatch(getAllCategories()) }
            > 
            <Text className={`text-amber-500 text-lg mr-1 ${Platform.select({android : 'text-sm mr-2'})}`}  > See All </Text>  
            </TouchableOpacity>

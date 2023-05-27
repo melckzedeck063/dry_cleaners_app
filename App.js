@@ -18,6 +18,7 @@ import { Provider } from 'react-redux';
 import store from './store/store';
 import LaundryForm from './screens/LaundryForm';
 import CategoryForm from './screens/CategoryForm';
+import ServiceForm from './screens/ServiceForm';
 
 const Stack =  createNativeStackNavigator();
 const Tab =  createMaterialBottomTabNavigator();
@@ -84,6 +85,9 @@ export default function App() {
              />
              <Stack.Screen name='CategoryForm' component={CategoryForm}
              options={{title :'Register Category'}} 
+             />
+             <Stack.Screen name='ServiceForm' component={ServiceForm }
+             options={{title :'Register Service'}} 
              />
           </Stack.Navigator>
        </NavigationContainer>

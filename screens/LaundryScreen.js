@@ -13,6 +13,7 @@ import image4 from '../assets/images/pexels-pixabay-325876.jpg';
 import ProductCard from '../components/ProductCard';
 import ServiceCard from '../components/ServiceCard';
 import { IMAGE_URL } from '../store/URL';
+import { useSelector } from 'react-redux';
 
 const categories =  [
     {name : "T-shirt", image :image1, id : 1, price :   500 },
@@ -28,7 +29,10 @@ const LaundryScreen = () => {
     const {width, height} =  useWindowDimensions();
     const {params : {props} } =  useRoute();
 
-    console.log(props);
+    const laundries  =  useSelector(state => state.laundry);
+    console.log(laundries.category_laundry);
+
+    // console.log(props);
 
 
     useLayoutEffect(() => {
@@ -53,7 +57,7 @@ const LaundryScreen = () => {
         <Text className={`font-bold capitalize text-slate-800 text-xl py-2 ${Platform.select({android : 'text-lg'})}`}>{props.name}</Text>
         
         <TouchableOpacity className="px-2 h-9 -p-1 bg-orange-400 flex flex-row space-x-2 rounded-lg"
-          onPress={()  => navigation.navigate('NewProduct',{
+          onPress={()  => navigation.navigate('ServiceForm',{
             props
           }) }
         >

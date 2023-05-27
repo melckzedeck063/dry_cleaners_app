@@ -4,6 +4,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions'
 
 import image from '../assets/images/pexels-polina-tankilevitch-4440521.jpg';
+import image2  from '../assets/images/pexels-engin-akyurt-6492065.jpg';
 import { useNavigation } from '@react-navigation/native';
 
 const WelcomeScreen = () => {
@@ -17,7 +18,7 @@ const WelcomeScreen = () => {
     })
   return (
       <View style={styles.container}>
-        <ImageBackground source={image} resizeMode='cover'
+        <ImageBackground source={image2} resizeMode='cover'
         style={{
           flex: 1,
           justifyContent: 'center'
@@ -28,7 +29,7 @@ const WelcomeScreen = () => {
 
     </View> */}
       <View style={styles.header}>
-        <Image source={{source : image}} style={{height : responsiveHeight(58)}} />
+        <Image source={{source : image2}} style={{height : responsiveHeight(58)}} />
       </View>
       <View style={styles.body} className="rounded-t-3xl">
         <Text className={`text-2xl font-bold text-center mb-4 ${Platform.select({android : 'text-xl'})}`}>Welcome to Laundry Connect</Text>
