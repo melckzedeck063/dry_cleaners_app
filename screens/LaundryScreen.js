@@ -110,7 +110,7 @@ const LaundryScreen = () => {
            }}
            renderItem={(itemData) => {
              return (
-                <ServiceCard name={itemData.item.serviceName} image={itemData.item.photo}  price={itemData.item.price} />
+                <ServiceCard name={itemData.item.serviceName} image={itemData.item.photo}  price={itemData.item.price} id={itemData.item._id} />
              )
            }}
            keyExtractor={(item) => item._id}

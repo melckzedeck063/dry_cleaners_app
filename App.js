@@ -19,6 +19,7 @@ import store from './store/store';
 import LaundryForm from './screens/LaundryForm';
 import CategoryForm from './screens/CategoryForm';
 import ServiceForm from './screens/ServiceForm';
+import { CartProvider } from 'react-use-cart';
 
 const Stack =  createNativeStackNavigator();
 const Tab =  createMaterialBottomTabNavigator();
@@ -27,6 +28,7 @@ export default function App() {
   return (
     <>
       <StatusBar style='auto' />
+      <CartProvider>
       <Provider store={store}>
       <NavigationContainer>
           <Stack.Navigator
@@ -92,6 +94,7 @@ export default function App() {
           </Stack.Navigator>
        </NavigationContainer>
       </Provider>
+      </CartProvider>
     </>
   );
 }

@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, Platform } from 'react-native'
 import React from 'react'
+import { useCart} from 'react-use-cart'
 
 import {FontAwesome, Ionicons, Entypo} from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
@@ -9,14 +10,17 @@ import { IMAGE_URL } from '../store/URL'
 const ServiceCard = (props) => {
   const navigation =  useNavigation();
 
-  // console.log(props.image)
+  const {addItem} = useCart()
 
-  const handleCart = () => {
-    setTimeout(() => {
-        navigation.navigate('Cart', {
-            props
-        })
-    }, 2000);
+  // console.log(props)
+
+  const handleCart = (data) => {
+    // console.log(data)
+    addItem(data)
+
+    // setTimeout(() => {
+    //   navigation.navigate('Cart')
+    // }, 1000);
   }
 
   return (
@@ -34,7 +38,7 @@ const ServiceCard = (props) => {
               <Text className={`text-white font-medium py-1 -mt-0.5 ${Platform.select({android : 'text-xs'})}`} > {props.price} Tsh </Text>
             </View>
             <TouchableOpacity  className="bg-orange-500 rounded-l-xl bottom-3"
-              onPress={handleCart}
+              onPress={() => handleCart(props)}
             >
                 <Text className="text-white  text-xl px-2 py-0.5">
                     <Entypo name='shopping-cart' size={24} color="white"  />
