@@ -117,7 +117,7 @@ const CategoryScreen = () => {
           }}
           renderItem={(itemData) => {
             return (
-              <ProductCard name={itemData.item.laundryName} image={itemData.item.photo} location={itemData.item.location} phone = {itemData.item.telephone}  />
+              <ProductCard name={itemData.item.laundryName} image={itemData.item.photo} location={itemData.item.location} phone = {itemData.item.telephone} id={itemData.item._id} />
             )
           }}
           keyExtractor={(item) => item._id}

@@ -4,6 +4,7 @@ import React from 'react'
 import {FontAwesome, Ionicons, Entypo} from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import {responsiveHeight, responsiveWidth, responsiveFontSize} from 'react-native-responsive-dimensions'
+import { IMAGE_URL } from '../store/URL'
 
 const ServiceCard = (props) => {
   const navigation =  useNavigation();
@@ -25,7 +26,7 @@ const ServiceCard = (props) => {
     //     props
     //   }) } 
       >
-        <Image source={props.image} className="h-52 w-full rounded-lg"  />
+        <Image source={{uri : `${IMAGE_URL}/${props.image}`}} className="h-52 w-full rounded-lg"  />
       <View style={{alignSelf : 'center', backgroundColor : '#1c4966'}} className="bg-slate-600 absolute w-11/12 rounded-lg -py-1 bottom-1" >
         <Text className={`text-white text-lg font-bold capitalize ${Platform.select({android : 'text-sm'})}`} > {props.name} </Text>
         <View className="flex-row justify-between px-1">

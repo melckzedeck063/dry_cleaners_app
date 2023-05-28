@@ -19,14 +19,6 @@ import { getAllLaundry } from '../store/actions/laundry_actions'
 import { getAllCategories } from '../store/actions/category_action'
 // import { SafeAreaView } from 'react-native-safe-area-context';
 
-const categories =  [
-  {name : "Mghwai Laundry", image :image1, id : 1, location : 'Nkuhungu' },
-  {name : "Nupe Laundry", image :image2, id : 2, location :  "Iyumbu" },
-  {name : "Darajani Cleaner", image :image3, id: 3, location :  "Makulu" },
-  {name : "La-liga Laundry", image : image4 , id : 4, location :  "Uhindini"},
-  {name : "Smart Laundry", image :image1, id: 5, location :  "Kisasa" },
-  {name : "Ujasi Laundry", image :image2, id : 6, location :  "Coed  Ujasi" },
-]
 
 const HomeScreen = () => {
     
@@ -43,13 +35,12 @@ const HomeScreen = () => {
     // console.log(laundries.all_laundry);
 
     const handleOutsidePress = (event) => {
-      // if (drawerRef.current && !drawerRef.current.contains(event.target)) {
-        // }
-        // console.log('clicked')
+
           setIsDrawerOpen(false);
     };
 
     // console.log(height);
+
     setTimeout(() => {
       if(reload  <  5){
        setReload(reload + 1)

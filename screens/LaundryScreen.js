@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import {responsiveHeight, responsiveWidth, responsiveFontSize} from 'react-native-responsive-dimensions';
 import { View, Text, Image, useWindowDimensions, TouchableOpacity, ScrollView, Platform, FlatList } from 'react-native';
@@ -13,26 +13,34 @@ import image4 from '../assets/images/pexels-pixabay-325876.jpg';
 import ProductCard from '../components/ProductCard';
 import ServiceCard from '../components/ServiceCard';
 import { IMAGE_URL } from '../store/URL';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getLaundryServices } from '../store/actions/service_actions';
 
-const categories =  [
-    {name : "T-shirt", image :image1, id : 1, price :   500 },
-    {name : "Trouser", image :image2, id : 2, price :   1000 },
-    {name : "Gown", image :image3, id: 3, price :   1000 },
-    {name : "Suit", image : image4 , id : 4, price :   3000},
-    {name : "Blankets", image :image1, id: 5, price :   3000 },
-    {name : "Jeans", image :image2, id : 6, price :   1500 },
-  ]
 
 const LaundryScreen = () => {
     const navigation =  useNavigation();
+    const dispatch = useDispatch();
     const {width, height} =  useWindowDimensions();
     const {params : {props} } =  useRoute();
+    const [reload, setReload] = useState(0);
+    
 
-    const laundries  =  useSelector(state => state.laundry);
-    // console.log(laundries.category_laundry);
+    const services  =  useSelector(state => state.service);
+    // console.log(services.laundry_services);
 
-    console.log(props);
+    // console.log(props);
+
+    setTimeout(() => {
+      if(reload < 5){
+        setReload(reload => reload + 1);
+      }
+    }, 1000);
+
+    useEffect(() => {
+      if(services && services.laundry_services && reload < 4){
+        dispatch( getLaundryServices(props.id) )
+      }
+    })
 
 
     useLayoutEffect(() => {
@@ -88,23 +96,31 @@ const LaundryScreen = () => {
            <Text className={`text-amber-500 text-lg mr-1 ${Platform.select({android : 'text-sm mr-2'})}`}  > See All </Text>  
            </TouchableOpacity> */}
         </View>
-        
-         <FlatList 
-          data={categories}
-          horizontal = {false}
-          showsHorizontalScrollIndicator ={false}
-          numColumns={2}
-          contentContainerStyle = {{
-            paddingHorizontal : 1,
-            paddingVertical : 5
-          }}
-          renderItem={(itemData) => {
-            return (
-               <ServiceCard name={itemData.item.name} image={itemData.item.image}  price={itemData.item.price} />
-            )
-          }}
-          keyExtractor={(item) => item.id}
-         />
+        {
+          services?.laundry_services?.data?.services?(
+            <>
+          <FlatList 
+           data={services.laundry_services.data.services}
+           horizontal = {false}
+           showsHorizontalScrollIndicator ={false}
+           numColumns={2}
+           contentContainerStyle = {{
+             paddingHorizontal : 1,
+             paddingVertical : 5
+           }}
+           renderItem={(itemData) => {
+             return (
+                <ServiceCard name={itemData.item.serviceName} image={itemData.item.photo}  price={itemData.item.price} />
+             )
+           }}
+           keyExtractor={(item) => item._id}
+          />
+            </>
+          )
+          :
+          <>
+          </>
+        }
       </View>
 
      </View>

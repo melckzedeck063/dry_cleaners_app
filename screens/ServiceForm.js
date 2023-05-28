@@ -15,6 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import  {responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensions';
 import { useWindowDimensions } from 'react-native';
 import { BASE_URL } from '../store/URL';
+import { registerService } from '../store/actions/service_actions';
 
 const ServiceForm = () => {
     
@@ -23,7 +24,7 @@ const ServiceForm = () => {
   const dispatch =  useDispatch();
   const {params : {props} } =  useRoute();
 
-  // console.log(props);
+  console.log(props);
 
  
 
@@ -92,7 +93,7 @@ const ServiceForm = () => {
       data.laundry =  props.id
       console.log(data)
       
-      // dispatch( createLaundry(data) )
+      dispatch( registerService(data) )
 
       reset()
     }

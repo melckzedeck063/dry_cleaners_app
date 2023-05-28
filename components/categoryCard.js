@@ -17,7 +17,7 @@ const CategoryCard = (props) => {
     >
       <View style={style.category}>
             <Image style={{width : responsiveWidth(30)}} source={{uri :  `${IMAGE_URL}/${props.image}`}} className="h-24 w-32 overflow-hidden"  />
-              <Text style={style.categoryTitle} className={`pt-2`}>{props.name}</Text>
+              <Text style={style.categoryTitle} className={`pt-2 font-medium`}>{props.name}</Text>
             </View>
     </TouchableOpacity>
   )
@@ -64,8 +64,7 @@ const style = StyleSheet.create({
       marginBottom: 8,
     },
     categoryTitle: {
-      fontSize: responsiveFontSize(1.5),
-      fontWeight: 'bold',
+      fontSize: responsiveFontSize(1.4),
       textAlign: 'center',
     },
   })

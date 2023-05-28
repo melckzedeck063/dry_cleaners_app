@@ -9,11 +9,11 @@ import { IMAGE_URL } from '../store/URL'
 const ProductCard = (props) => {
   const navigation =  useNavigation();
 
-  console.log(props)
+  // console.log(props)
   
 
   return (
-    <View style={style.card} className="mx-1 bg-slate-300 my-1.5 ml-1.5 relative rounded-lg f">
+    <View style={style.card} className="mx-1 bg-pink-200 my-1.5 ml-1.5 relative rounded-lg f">
       <TouchableOpacity className="flex-row flex justify-between space-x-2"
       onPress={() => navigation.navigate('Laundry', {
         props
