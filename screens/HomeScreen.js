@@ -1,15 +1,15 @@
-import { View, Text, TouchableOpacity, useWindowDimensions,TouchableWithoutFeedback, StyleSheet, ScrollView, FlatList, Platform } from 'react-native'
-import React, { useLayoutEffect, useState, useEffect } from 'react'
+import { View, Text, TouchableOpacity, useWindowDimensions,TouchableWithoutFeedback, StyleSheet, ScrollView, FlatList, Platform, Image } from 'react-native'
+import React, { useLayoutEffect, useState, useEffect,useRef } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import {Controller, useForm} from 'react-hook-form'
 import { Ionicons, FontAwesome, FontAwesome5, Entypo, MaterialCommunityIcons }  from '@expo/vector-icons'
 import {responsiveHeight, responsiveWidth, responsiveFontSize} from 'react-native-responsive-dimensions'
+import * as Location from 'expo-location';
+// import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
+import { Tooltip } from 'react-native-elements';
 
 
-import image1 from '../assets/images/pexels-pramod-tiwari-13602888.jpg';
-import image2 from '../assets/images/pexels-ekaterina-belinskaya-4700420.jpg';
-import image3 from '../assets/images/pexels-engin-akyurt-6492065.jpg';
-import image4 from '../assets/images/pexels-pixabay-325876.jpg';
 // import categoryCard from '../components/categoryCard';
 import CategoryCard from '../components/categoryCard';
 import ProductCard from '../components/ProductCard';
@@ -17,8 +17,12 @@ import NavigationDrawer from '../components/NavigationDrawer'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllLaundry } from '../store/actions/laundry_actions'
 import { getAllCategories } from '../store/actions/category_action'
+
 // import { SafeAreaView } from 'react-native-safe-area-context';
 
+const driversAround = [
+  { latitude: -6.244117, longitude: 35.825196, name: "zedenga", phone: "0744219981" },
+];
 
 const HomeScreen = () => {
     
@@ -27,6 +31,10 @@ const HomeScreen = () => {
     const {height, width} =  useWindowDimensions()
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [reload, setReload] =  useState(0)
+    const [location, setLocation] = useState();
+  const [address, setAddress] = useState();
+  const _map = useRef(1);
+  const [latlong, setLatlong] = useState({});
 
     const our_categories = useSelector(state => state.category);
     // console.log(our_categories.categories);
@@ -71,6 +79,44 @@ const HomeScreen = () => {
        }
      },[laundries, reload])
      
+
+     const checkPermission = async () => {
+      const hasPermission = await Location.requestForegroundPermissionsAsync();
+  
+      if (hasPermission.status === "granted") {
+        const permission = askPermission();
+        return permission;
+      }
+      return true;
+    }
+  
+    const askPermission = async () => {
+      const permission = await Location.requestForegroundPermissionsAsync();
+      return permission.status === "granted";
+    }
+  
+    const getCurrentLocation = async () => {
+      try {
+        const { granted } = await Location.requestForegroundPermissionsAsync();
+        if (!granted) return;
+        const {
+          coords: { latitude, longitude },
+        } = await Location.getCurrentPositionAsync();
+        setLatlong({ latitude: latitude, longitude: longitude });
+  
+      }
+      catch (error) {
+        console.log(error);
+      }
+    }
+  
+    useEffect(() => {
+      checkPermission();
+      getCurrentLocation();
+  
+      console.log(latlong);
+    }, []);
+  
    
 
     
@@ -96,11 +142,11 @@ const HomeScreen = () => {
             </TouchableOpacity>
         </View>
         <View className="" >
-        <TouchableOpacity className="rounded-lg bg-whitee h-8  w-8" >
+        {/* <TouchableOpacity className="rounded-lg bg-whitee h-8  w-8" >
                 <Text>
                    <Ionicons name="notifications-sharp" size={32} color="#1c4966" />
                 </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         </View>
       </View>
 
@@ -113,15 +159,14 @@ const HomeScreen = () => {
         </TouchableOpacity>
       </View>
       </View>
-      {/* <View style={[style.card, style.ad_card]} className={``}>
-      </View> */}
+      
       <View style={{height : responsiveHeight(26) }} className={`w-full ${Platform.select({android : 'mt-2'})}`} >
         <View className="flex-row justify-between" >
           <View>
              <Text className={`text-slate-800 font-bold text-lg px-2 py-1.5 ${Platform.select({android : 'text-sm'})}`} >Our Services</Text>
           </View>
            <TouchableOpacity
-            onPress={() => dispatch(getAllCategories()) }
+            onPress={() => navigation.navigate('AllCategories') }
            > 
            <Text className={`text-amber-500 text-lg mr-1 ${Platform.select({android : 'text-sm mr-2'})}`}  > See All </Text>  
            </TouchableOpacity>
@@ -152,39 +197,76 @@ const HomeScreen = () => {
       </View>
 
       <View style={{height : responsiveHeight(32)}} className={` mb-1.5 ${height> 750? '-mt-14' : '-mt-4'} ${height > 700 ?Platform.select({android : '-mt-8'}) : ''}`} >
-        <View style={style.container} className="" >
-         <View className="flex-row justify-between" >
-          <View>
-             <Text className={`text-slate-800 font-bold text-lg px-2 py-1.5 ${Platform.select({android : 'text-sm'})}`} > Nearby Dry Cleaners </Text>
-          </View>
-           <TouchableOpacity 
-            onPress={() =>  navigation.navigate('AllProducts')}
-           > 
-           <Text className={`text-amber-500 text-lg mr-1 ${Platform.select({android : 'text-sm mr-3'})}`} > See All </Text>  
-           </TouchableOpacity> 
-          </View>
-          {
-            laundries?.all_laundry?.data?.data ? (
+        <View className="flex-row justify-between" >
+         <View>
+            <Text className={`text-slate-800 font-bold text-lg px-2 py-1.5 ${Platform.select({android : 'text-sm'})}`} > Nearby Dry Cleaners </Text>
+         </View>
+          <TouchableOpacity 
+           onPress={() =>  navigation.navigate('AllProducts')}
+          > 
+          <Text className={`text-amber-500 text-lg mr-1 ${Platform.select({android : 'text-sm mr-3'})}`} > See All </Text>  
+          </TouchableOpacity> 
+         </View>
 
-              <FlatList className="borderd-2 border-gray-400 bg-white rounded pr-1.5 pl-1" 
-               
-               data={laundries.all_laundry.data.data}
-               renderItem={(itemData) => {
-                return (
-                  <ProductCard name={itemData.item.laundryName} image={itemData.item.photo} location={itemData.item.location} phone = {itemData.item.telephone} id={itemData.item._id}  />
-                )
-               }}
-              />
+         <View>
+         <View style={style.container}>
+         <View style={style.mapContainer}>
+          {
+            laundries?.all_laundry?.data?.data?(
+              <>
+        <MapView
+          ref={_map}
+          provider={PROVIDER_GOOGLE}
+          style={style.map}
+          showsUserLocation={true}
+          followsUserLocation={true}
+          rotateEnabled={true}
+          zoomControlEnabled={true}
+          toolbarEnabled={true}
+          initialRegion={{
+            ...driversAround[0],
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        >
+          {driversAround.map((item, index) =>
+            <Marker coordinate={item} key={index.toString()}>
+              
+                {/* <Image
+                  source={require('../assets/images/laundry.png')}
+                  resizeMode='cover'
+                  style={style.driverImage}
+                /> */}
+              <Text className="text-slate-800  font-light">  </Text>
+            </Marker>
+          )}
+
+    {laundries?.all_laundry?.data?.data.map((laundry, index) => (
+      <Marker
+        coordinate={{ latitude: laundry.geo.latitude, longitude: laundry.geo.longitude }}
+            key={index.toString()}
+          >
+        <Image source={require('../assets/images/laundry.png')} resizeMode='cover' style={style.driverImage} />
+        <Tooltip popover={<Text>{laundry.laundryName}</Text>} backgroundColor="white">
+          <Text style={style.laundryName}>{laundry.laundryName}</Text>
+        </Tooltip>
+     </Marker>
+    ))}
+        </MapView>
+              </>
             )
-            : 
+            :
             <>
-            <View>
-              <Text style={{fontSize  : responsiveFontSize(2.5)}} className={`text-center text-sky-500 text-lg animate-pulse pt-6`} >Loading  ....</Text>
-            </View>
+             <View>
+              <Text className="text-blue-500 text-center py-12 font-medium text-lg">Loading ....</Text>
+             </View>
             </>
           }
-        </View>
       </View>
+    </View>
+
+         </View>
+        </View>
 
       <View  style={[style.drawer, isDrawerOpen ? { left: 0 } : { left: -250 }]} className="bg-slatee-700 -ml-1 relative">
           {/* <TouchableOpacity onPress={() => setIsDrawerOpen(false)} className="pt-3  my-2 mr-2">
@@ -244,6 +326,25 @@ const style = StyleSheet.create({
     bottom: 0,
     width: 300,
   },
+  container2: {
+    flex: 1,
+  },
+  map: {
+    width: '100%',
+    height: '100%',
+  },
+  mapContainer: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  driverImage: {
+    height: responsiveHeight(8),
+    width: responsiveWidth(12)
+  }
 })
 
 

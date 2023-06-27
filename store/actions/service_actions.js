@@ -5,6 +5,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
  import * as SecureStore from 'expo-secure-store';
+import { addNotification } from "../reducers/notification_reducer";
 
 const SERVICE_API =  axios.create({baseURL : `${BASE_URL}/service`});
 SERVICE_API.interceptors.request.use( async (req) => {
@@ -32,7 +33,7 @@ export const getAllServices = createAsyncThunk ('/services', async() => {
     }
 })
 
-export const registerService = createAsyncThunk ('new/service', async(values)=>{
+export const registerService = createAsyncThunk ('new/service', async(values,{dispatch})=>{
     console.log(values)
     try{
         const response = await SERVICE_API.post('/new_service', {
@@ -43,10 +44,12 @@ export const registerService = createAsyncThunk ('new/service', async(values)=>{
         });
 
         // console.log(response.data);
+        dispatch(addNotification({message : "Succesfully registered", type : "success"}))
         return  response.data
     }
     catch(error){
         console.log(error);
+        dispatch(addNotification({message : "Request failed please try  again", type : "error"}))
         return error.message
     }
 })

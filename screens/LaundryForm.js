@@ -1,5 +1,5 @@
-import { View, Text, KeyboardAvoidingView,Button, ScrollView,Image, TouchableOpacity, TextInput, Platform } from 'react-native'
-import React, { useState, useCallback, useLayoutEffect }  from 'react'
+import { View, Text, KeyboardAvoidingView,Button, ScrollView,Image, TouchableOpacity, TextInput, Platform, Alert } from 'react-native'
+import React, { useState, useCallback, useLayoutEffect ,useEffect}  from 'react'
 
 import  { useForm, Controller } from 'react-hook-form'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
@@ -8,14 +8,17 @@ import * as ImagePicker from 'expo-image-picker';
 import { Ionicons}  from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 // import {makeNewProduct } from '../store/reduxStore/actions/product_actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import * as Location from 'expo-location';
 import  {responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensions';
 import { useWindowDimensions } from 'react-native';
 import { BASE_URL } from '../store/URL';
 import { createLaundry } from '../store/actions/laundry_actions';
+import PopupComponent from '../components/PopupComponent';
+import * as SecureStore from 'expo-secure-store';
+
 
 const LaundryForm = () => {
     
@@ -23,6 +26,42 @@ const LaundryForm = () => {
   const [imageData, setImageData] =  useState("")
   const dispatch =  useDispatch();
   const {params : {props} } =  useRoute();
+
+  const [location, setLocation] = useState();
+    const [address, setAddress]  =  useState(null);
+
+    const notifications =  useSelector(state => state.notification);
+
+    console.log(notifications)
+
+    useEffect(() =>{
+        const  getPermissions = async () =>{
+            let {status} = await Location.requestForegroundPermissionsAsync();
+            if(status  !== "granted"){
+                console.log('Please grant location permissions');
+                return;
+            }
+
+            let currentLocation = await Location.getCurrentPositionAsync({});
+            setLocation(currentLocation);
+            console.log('location');
+            console.log(currentLocation);
+        };
+        getPermissions();
+    }, []);
+
+    const geocode = async (data) => {
+      console.log(data);
+      const geocodedLocation = await Location.geocodeAsync(data);
+      if (geocodedLocation.length > 0) {
+        const { latitude, longitude } = geocodedLocation[0];
+        setAddress({latitude  : latitude, longitude : longitude})
+        console.log('Geocoded address:', latitude, longitude);
+      } else {
+        console.log('No geocoded address found');
+      }
+    };
+
 
   // console.log(props);
 
@@ -92,13 +131,27 @@ const LaundryForm = () => {
 
 
     const onSubmit = data => {
+      const {location} =  data
+      geocode(location)
+    // console.log("address : ",address)
+  
+  data.geo  =  address
+
+
       data.photo = imageData
       data.category =  props.id
-    //   console.log(data)
+      console.log(data)
+      if(data.geo === null){
+        Alert.alert("Entered location is not identified")
+      }
+      else{
+        setTimeout(() => {
+          dispatch( createLaundry(data) )
+          reset()
+        }, 1000);
+      }
       
-      dispatch( createLaundry(data) )
 
-      reset()
     }
 
     useLayoutEffect(() => {
@@ -118,6 +171,24 @@ const LaundryForm = () => {
                       <Text   className="text-center font-bold text-lg text-slate-700" >
                         Register Your Laundry
                       </Text>
+                    </View>
+                    <View>
+                    {
+          notifications?.notifications[0]?.type==="success" &&(
+            <>     
+           <PopupComponent message={notifications.notifications[0].message} type="success" />
+            </>
+
+          )
+        }
+          
+          {
+            notifications?.notifications[0]?.type==="error" &&(
+          <>
+          <PopupComponent message={notifications.notifications[0].message} type="error" />
+          </>
+            )
+          }
                     </View>
      <View style={{alignSelf : 'center'}} className={`bg-white shadow-md rounded-lg px-4 py-3 w-10/12 my-8 ${height <=  700 ? 'py-2' :  ''} `}>
            {/* <Text className="text-2xl font-medium text-red-400 text-center" >Sign Up</Text> */}
@@ -159,8 +230,7 @@ const LaundryForm = () => {
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput  className={`rounded-md bg-slate-100 px-4 py-2.5 border-2 ${Platform.select({android :  'py-1.5'})} ${errors.location? 'border-red-500' :  'border-slate-300'}`}
-          placeholder="Enter telephone"
-          keyboardType='phone-pad'
+            placeholder="Enter telephone"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}

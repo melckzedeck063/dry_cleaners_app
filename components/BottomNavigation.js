@@ -6,6 +6,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CartScreen from '../screens/CartScreen';
 import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingScreen';
+import Profile from '../screens/ProfileScreen';
+import OrderScreen from '../screens/OrderScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -47,10 +49,10 @@ export default function BottomNavigator() {
             //       />
             //     );
             //   }
-              else if (route.name === 'Settings') {
+              else if (route.name === 'Orders') {
                 return (
                   <Ionicons
-                    name={focused ? 'settings' : 'settings-outline'}
+                    name={focused ? 'list-circle' : 'list-circle-outline'}
                     size={size}
                     color={color}
                   />
@@ -74,11 +76,11 @@ export default function BottomNavigator() {
           component={HomeScreen}
         //   options={{ tabBarBadge: 3 }}
         />
-        <Tab.Screen name="Cart" component={CartScreen} options={{ tabBarBadge: 3 }}
+        <Tab.Screen name="Cart" component={CartScreen}
          
         />
         {/* <Tab.Screen name="Orders" component={OrdersScreen} options={{ tabBarBadge: 3 }} /> */}
-        <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen name="Orders" component={OrderScreen} />
       </Tab.Navigator>
     // </NavigationContainer>
   );

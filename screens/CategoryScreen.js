@@ -16,6 +16,7 @@ import ProductCard from '../components/ProductCard';
 import { IMAGE_URL } from '../store/URL'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCategoryLaundry } from '../store/actions/laundry_actions'
+import * as SecureStore from 'expo-secure-store';
 
 
 const categories =  [
@@ -34,6 +35,25 @@ const CategoryScreen = () => {
 
     const laundries  = useSelector (state => state.laundry);
     // console.log(laundries.category_laundry);
+
+    const [user_role, setUser_role] =  useState(null)
+
+
+  const gettToken =  async () => {
+    const storage = await SecureStore.getItemAsync('token');
+    const user_role = JSON.parse(storage);
+  
+  if (user_role.doc.user.role === "admin") {
+    setUser_role("admin");
+  } else if (user_role.doc.user.role === "driver") {
+    setUser_role("driver");
+  }
+}
+
+useEffect(() => {
+  gettToken();
+}, []);
+
 
     setTimeout(() => {
       if(reload <  5){
@@ -70,7 +90,8 @@ const CategoryScreen = () => {
      <View className="mx-2 px-2 mb-2">
       <View className={`flex flex-row justify-between my-3 ${height <  850 ?  'my-2' :  ''}`}>
         <Text className={`font-bold capitalize text-slate-800 text-xl py-2 ${Platform.select({android : 'text-lg'})}`}>{props.name}</Text>
-        
+         {
+          user_role ===  "admin"  &&(
         <TouchableOpacity className="px-2 h-9 -p-1 bg-orange-400 flex flex-row space-x-2 rounded-lg"
           onPress={()  => navigation.navigate('LaundryForm',{
             props
@@ -81,6 +102,8 @@ const CategoryScreen = () => {
           </Text>
           <Text className={`text-white font-bold mt-1 text-lg ${Platform.select({android : 'text-sm'})}`}>New</Text>
         </TouchableOpacity>
+          )
+         }
 
       </View>
         <Text className={`font-mediumm capitalize text-slate-800 ${height  < 838 ? '-mt-1' :  ''} px-2 ${Platform.select({android : 'text-xs'})}`}> 

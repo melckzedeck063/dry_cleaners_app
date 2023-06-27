@@ -15,7 +15,7 @@ import ServiceCard from '../components/ServiceCard';
 import { IMAGE_URL } from '../store/URL';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLaundryServices } from '../store/actions/service_actions';
-
+import * as SecureStore from 'expo-secure-store'
 
 const LaundryScreen = () => {
     const navigation =  useNavigation();
@@ -29,6 +29,25 @@ const LaundryScreen = () => {
     // console.log(services.laundry_services);
 
     // console.log(props);
+
+    const [user_role, setUser_role] =  useState(null)
+
+
+  const gettToken =  async () => {
+    const storage = await SecureStore.getItemAsync('token');
+    const user_role = JSON.parse(storage);
+  
+  if (user_role.doc.user.role === "admin") {
+    setUser_role("admin");
+  } else if (user_role.doc.user.role === "driver") {
+    setUser_role("driver");
+  }
+}
+
+useEffect(() => {
+  gettToken();
+}, []);
+
 
     setTimeout(() => {
       if(reload < 5){
@@ -53,7 +72,7 @@ const LaundryScreen = () => {
      {/* <ScrollView   > */}
      <View style={{backgroundColor :  '#fff'}} className="h-full">
      <View className="relative">
-        <Image style={{height : responsiveHeight(30)}} source={{uri  : `${IMAGE_URL}/${props.image}`}} className="w-full" />
+        <Image style={{height : responsiveHeight(28)}} source={{uri  : `${IMAGE_URL}/${props.image}`}} className="w-full" />
         <View className='absolute inset-0 bg-black/60' ></View>
         <View className="absolute bottom-2 px-2">
             {/* <Text className={`font-bold my-1.5 text-2xl capitalize text-white ${Platform.select({android : 'text-xl'})}`}>{props.name}</Text> */}
@@ -64,6 +83,8 @@ const LaundryScreen = () => {
       <View className={`flex flex-row justify-between my-3 ${height <  850 ?  'my-2' :  ''}`}>
         <Text className={`font-bold capitalize text-slate-800 text-xl py-2 ${Platform.select({android : 'text-lg'})}`}>{props.name}</Text>
         
+        {
+          user_role === "admin" &&(
         <TouchableOpacity className="px-2 h-9 -p-1 bg-orange-400 flex flex-row space-x-2 rounded-lg"
           onPress={()  => navigation.navigate('ServiceForm',{
             props
@@ -74,6 +95,8 @@ const LaundryScreen = () => {
           </Text>
           <Text className={`text-white font-bold mt-1 text-lg ${Platform.select({android : 'text-sm'})}`}>New</Text>
         </TouchableOpacity>
+          )
+        }
 
       </View>
         <Text className={`font-mediumm capitalize -mt-1 text-slate-800 ${height  < 838 ? '-mt-1' :  ''} px-2 ${Platform.select({android : 'text-xs'})}`}> 
@@ -85,10 +108,10 @@ const LaundryScreen = () => {
      <View className={``}>
      </View>
 
-      <View style={{height : responsiveHeight(41)}} className={`w-full mb-3 px-2.5 ${Platform.select({android : 'mt-2'})}`} >
+      <View style={{height : responsiveHeight(40)}} className={`w-full mb-4 px-2.5 ${Platform.select({android : 'mt-2'})}`} >
         <View className="flex-row justify-between" >
           <View>
-             <Text className={`text-slate-700 font-bold text-xl px-2 mt-1 pb-1.5 ${Platform.select({android : 'text-lg'})}`} >Available Services</Text>
+             <Text style={{fontSize : responsiveFontSize(2)}} className={`text-slate-700 font-bold text-xl px-2  `} >Available Services</Text>
           </View>
            {/* <TouchableOpacity
             onPress={() =>  navigation.navigate('AllCategories')}
@@ -106,7 +129,8 @@ const LaundryScreen = () => {
            numColumns={2}
            contentContainerStyle = {{
              paddingHorizontal : 1,
-             paddingVertical : 5
+             paddingVertical : 8,
+             marginBottom : 6
            }}
            renderItem={(itemData) => {
              return (

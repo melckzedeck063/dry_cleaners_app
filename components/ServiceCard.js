@@ -26,9 +26,9 @@ const ServiceCard = (props) => {
   return (
     <View style={style.card} className="bg-slate-700 mx-1.5 my-1.5 relative rounded-lg">
       <TouchableOpacity 
-    //   onPress={() => navigation.navigate('Laundry', {
-    //     props
-    //   }) } 
+      onPress={() => navigation.navigate('ViewProduct', {
+        props
+      }) } 
       >
         <Image source={{uri : `${IMAGE_URL}/${props.image}`}} className="h-52 w-full rounded-lg"  />
       <View style={{alignSelf : 'center', backgroundColor : '#1c4966'}} className="bg-slate-600 absolute w-11/12 rounded-lg -py-1 bottom-1" >
@@ -38,11 +38,11 @@ const ServiceCard = (props) => {
               <Text className={`text-white font-medium py-1 -mt-0.5 ${Platform.select({android : 'text-xs'})}`} > {props.price} Tsh </Text>
             </View>
             <TouchableOpacity  className="bg-orange-500 rounded-l-xl bottom-3"
-              onPress={() => handleCart(props)}
+              // onPress={() => handleCart(props)}
             >
-                <Text className="text-white  text-xl px-2 py-0.5">
+                {/* <Text className="text-white  text-xl px-2 py-0.5">
                     <Entypo name='shopping-cart' size={24} color="white"  />
-                </Text>
+                </Text> */}
             </TouchableOpacity>
         </View>
       </View>

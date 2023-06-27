@@ -15,14 +15,22 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config" : {
+        "googleMapsApiKey" : "AIzaSyAP2g5HWBOT3Zx03hkfMvW6PTW5cmLA0R0"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.melckzedeck063.laundry_connect"
+      "package": "com.melckzedeck063.laundry_connect",
+      "config" : {
+        "googleMaps" : {
+          "apiKey"  :  "AIzaSyAP2g5HWBOT3Zx03hkfMvW6PTW5cmLA0R0"
+        }
+      } 
     },
     "web": {
       "favicon": "./assets/favicon.png"

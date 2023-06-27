@@ -7,8 +7,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { signUpUser } from '../store/actions/user_actions';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch,useSelector } from 'react-redux';
+import PopupComponent from '../components/PopupComponent';
 
 
 const SIgnUpScreen = () => {
@@ -16,6 +16,10 @@ const SIgnUpScreen = () => {
     const navigation = useNavigation();
     const { width, height } = useWindowDimensions();
     const dispatch = useDispatch();
+    const notifications =  useSelector(state => state.notification);
+
+    console.log(notifications)
+
 
     const { register, reset, control, handleSubmit, formState: { errors, isDirty, isValid } } = useForm({
         defaultValues :  {
@@ -58,6 +62,26 @@ const SIgnUpScreen = () => {
         <View style={{backgroundColor : '#fff'}} className={`w-full h-full bg-slate-900 -mtt-10 ${Platform.select({ios : 'py-32 -mt-20', android : 'py-4'})}`}>
       <View style={{alignSelf : 'center', backgroundColor  : '#1c4966'}} className="bg-slate-700 shadow-md rounded-lg px-4 py-5 w-10/12 my-3">
            <Text className={`text-2xl font-medium text-white text-center ${Platform.select({android : 'text-xl'})}`} >Sign Up</Text>
+           
+           <View className="my-2">
+                    {
+          notifications?.notifications[0]?.type==="success" &&(
+            <>     
+           <PopupComponent message={notifications.notifications[0].message} type="success" />
+            </>
+
+          )
+        }
+          
+          {
+            notifications?.notifications[0]?.type==="error" &&(
+          <>
+          <PopupComponent message={notifications.notifications[0].message} type="error" />
+          </>
+            )
+          }
+                    </View>
+
       <View className="my-2">
        <Text className={`text-lg text-white ${Platform.select({android : 'text-sm'})}`} >FirstName</Text>
         <Controller

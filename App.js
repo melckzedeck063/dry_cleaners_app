@@ -20,6 +20,14 @@ import LaundryForm from './screens/LaundryForm';
 import CategoryForm from './screens/CategoryForm';
 import ServiceForm from './screens/ServiceForm';
 import { CartProvider } from 'react-use-cart';
+import OrderScreen from './screens/OrderScreen'
+import OrderDetailsScreen from './screens/OrderDetailsScreen';
+import CheckoutScreen from './screens/CheckOutScreen';
+import LocationTracking from './screens/LocationTracking';
+import ProductScreen from './screens/ProductScreen';
+import ConfirmOrderScreen from './screens/OrderConfirmation';
+import AllCategories from './screens/AllCategories';
+import TermsAndConditionsScreen from './screens/TermsAndConditionScreen';
 
 const Stack =  createNativeStackNavigator();
 const Tab =  createMaterialBottomTabNavigator();
@@ -70,6 +78,15 @@ export default function App() {
              <Stack.Screen name='AllServices' component={CategoryScreen} 
              options={{title : "All Services"}}
              />
+             <Stack.Screen name='AllOrders' component={OrderScreen} 
+             options={{title : "All Orders"}}
+             />
+             <Stack.Screen name='OrderDetails' component={OrderDetailsScreen} 
+             options={{title : "Order Details"}}
+             />
+            <Stack.Screen name='Checkout' component={CheckoutScreen} 
+             options={{title : "Checkout"}}
+             />
               <Stack.Screen name='Settings' component={SettingScreen} 
              options={{title : "Settings"}}
              />
@@ -91,6 +108,22 @@ export default function App() {
              <Stack.Screen name='ServiceForm' component={ServiceForm }
              options={{title :'Register Service'}} 
              />
+             <Stack.Screen name='Location' component={ LocationTracking }
+             options={{title :'Location Tracking'}} 
+             />
+             <Stack.Screen name='ViewProduct' component={ ProductScreen }
+             options={{title :'Details'}} 
+             />
+             <Stack.Screen name='ConfirmOrder' component={ ConfirmOrderScreen }
+             options={{title :'Order Confirmation'}} 
+             />
+             <Stack.Screen name='AllCategories' component={ AllCategories }
+             options={{title :'All Categories'}} 
+             />
+             <Stack.Screen name='Condition' component={TermsAndConditionsScreen }
+             options={{title :'Terms and Conditions'}} 
+             />
+             
           </Stack.Navigator>
        </NavigationContainer>
       </Provider>

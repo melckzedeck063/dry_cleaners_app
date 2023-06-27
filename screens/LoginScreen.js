@@ -6,10 +6,10 @@ import { useForm, Controller, useController, useWatch } from 'react-hook-form';
 import  { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 // import * as Yup from 'yup';
 import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions'
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import *  as SecureStore from 'expo-secure-store';
 import { signInUser } from '../store/actions/user_actions';
-
+import PopupComponent from '../components/PopupComponent';
 
 const LoginScreen = () => {
     const navigation = useNavigation();
@@ -17,6 +17,9 @@ const LoginScreen = () => {
     const [reload,setReload] = useState(0);
     const { width, height } = useWindowDimensions();
 
+    const notifications =  useSelector(state => state.notification);
+
+    console.log(notifications)
 
     const checkUser = async () =>  {
       const storage = await  SecureStore.getItemAsync('token');
@@ -30,32 +33,23 @@ const LoginScreen = () => {
           //   }
           // }, 1000);
           setTimeout(() => {
-            navigation.navigate('HomeTab')
+            navigation.navigate('HomeTab');
           }, 3000);
         }
         else {
           console.log("nothing to connsole")
         }
     }
-// console.log(message)
-// setTimeout(() => {
-//   checkUser();
-//   }, 6000);
-
-  // setTimeout(() => {
-  //   if(reload < 5 ){
-  //     setReload(reload => reload + 1)
-  //   } 
-  //  }, 1000);
 
 
-  //   useEffect(() => {
-  //     if(reload < 4){
-  //       setTimeout(() => {
-  //         checkUser()
-  //       }, 2000);
-  //     }
-  //   })
+
+    useEffect(() => {
+      if(reload < 4){
+        setTimeout(() => {
+          // checkUser()
+        }, 2000);
+      }
+    })
 
     const {  handleSubmit,setValue, control, reset, formState: { errors, isValid, isDirty } } = useForm({
         defaultValues  : {
@@ -72,14 +66,14 @@ const LoginScreen = () => {
 
         setTimeout(() => {
           checkUser()
-        }, 3000)
+        }, 4000)
 
       }
 
-      setTimeout(() => {
-        checkUser()
-        //  navigation.navigate('HomeTab')
-      }, 2000);
+      // setTimeout(() => {
+        // checkUser()
+      //   //  navigation.navigate('HomeTab')
+      // }, 2000);
 
       useLayoutEffect(() => 
     {
@@ -102,11 +96,33 @@ const LoginScreen = () => {
           {/* <Text className={`text-sky-600 text-center font-medium text-3xl ${height < 400 ? 'mt-1' : 'mt-24'} `}>Login Screen</Text> */}
         <View className={`mx-auto shadow-md bg-slate-700 rounded-lg ${height < 400 ? 'mt-32 py-1' : 'py-6 mt-52'} ${width < 400 ? 'w-10/12' : 'w-10/12'} px-6`}  style={{alignSelf : 'center', backgroundColor : '#1c4966'}} >
       {/* <Text className="text-2xl font-medium text-slate-100 text-center" >Sign In</Text> */}
+      
+      <View className="my-2">
+                    {
+          notifications?.notifications[0]?.type==="success" &&(
+            <>     
+           <PopupComponent message={notifications.notifications[0].message} type="success" />
+            </>
+
+          )
+        }
+          
+          {
+            notifications?.notifications[0]?.type==="error" &&(
+          <>
+          <PopupComponent message={notifications.notifications[0].message} type="error" />
+          </>
+            )
+          }
+                    </View>
+
           <View className={``}>
-            <Image source={require('../assets/icon.png')}  className="rounded-full my-1"
+            {/* <Image source={require('../assets/icon.png')}  className="rounded-full my-1"
             style={{height : responsiveHeight(12), width : responsiveWidth(25), alignSelf :  'center'}} 
-            />
+            /> */}
           </View>
+
+          
           <View className="my-2">
            <Text className={`text-slate-100 text-xl ${Platform.select({android : 'text-lg'})}`} > Username</Text>
       <Controller

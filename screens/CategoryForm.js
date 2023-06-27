@@ -7,10 +7,11 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons}  from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
-import { useDispatch } from 'react-redux';
+import { useDispatch ,useSelector} from 'react-redux';
 import  { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions'
-import { registerCategory } from '../store/actions/category_action';
+import { getAllCategories, registerCategory } from '../store/actions/category_action';
 import { BASE_URL } from '../store/URL';
+import PopupComponent from '../components/PopupComponent';
 
 const CategoryForm = () => {
 
@@ -19,6 +20,9 @@ const CategoryForm = () => {
   const [imageData, setImageData] =  useState("")
   const {height, width} =  useWindowDimensions()
   const dispatch =  useDispatch();
+  const notifications =  useSelector(state => state.notification);
+
+    console.log(notifications)
 
     const { register, handleSubmit, reset, control, formState : {errors} } =  useForm({
         defaultValues  : {
@@ -77,6 +81,9 @@ const CategoryForm = () => {
         // console.log(data)
         
         dispatch( registerCategory(data) )
+        setTimeout(() => {
+          dispatch( getAllCategories())
+        }, 1000);
         reset()
       }
 
@@ -95,6 +102,24 @@ const CategoryForm = () => {
                       <Text   className="text-center font-bold text-lg text-slate-700" >
                         Register Your Service
                       </Text>
+                    </View>
+                    <View>
+                    {
+          notifications?.notifications[0]?.type==="success" &&(
+            <>     
+           <PopupComponent message={notifications.notifications[0].message} type="success" />
+            </>
+
+          )
+        }
+          
+          {
+            notifications?.notifications[0]?.type==="error" &&(
+          <>
+          <PopupComponent message={notifications.notifications[0].message} type="error" />
+          </>
+            )
+          }
                     </View>
      <View style={{alignSelf : 'center'}} className={`bg-white shadow-md rounded-lg px-4 py-3 w-10/12 my-20 ${height <=  700 ? 'py-2' :  ''} `}>
            {/* <Text className="text-2xl font-medium text-red-400 text-center" >Sign Up</Text> */}

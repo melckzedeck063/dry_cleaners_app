@@ -10,7 +10,7 @@ const CategoryCard = (props) => {
   const navigation =  useNavigation();
 
   return (
-    <TouchableOpacity className="mx-1.5 rounded-lg"
+    <TouchableOpacity className="mx-1.5 rounded-lg my-1"
     onPress={() => navigation.navigate('Service', {
       props
     }) }

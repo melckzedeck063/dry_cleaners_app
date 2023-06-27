@@ -8,7 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Ionicons}  from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 // import {makeNewProduct } from '../store/reduxStore/actions/product_actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -16,6 +16,7 @@ import  {responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensi
 import { useWindowDimensions } from 'react-native';
 import { BASE_URL } from '../store/URL';
 import { registerService } from '../store/actions/service_actions';
+import PopupComponent from '../components/PopupComponent';
 
 const ServiceForm = () => {
     
@@ -25,6 +26,9 @@ const ServiceForm = () => {
   const {params : {props} } =  useRoute();
 
   console.log(props);
+  const notifications =  useSelector(state => state.notification);
+
+    console.log(notifications)
 
  
 
@@ -115,6 +119,24 @@ const ServiceForm = () => {
                       <Text   className="text-center font-bold text-lg text-slate-700" >
                         Register Your Service
                       </Text>
+                    </View>
+                    <View>
+                    {
+          notifications?.notifications[0]?.type==="success" &&(
+            <>     
+           <PopupComponent message={notifications.notifications[0].message} type="success" />
+            </>
+
+          )
+        }
+          
+          {
+            notifications?.notifications[0]?.type==="error" &&(
+          <>
+          <PopupComponent message={notifications.notifications[0].message} type="error" />
+          </>
+            )
+          }
                     </View>
      <View style={{alignSelf : 'center'}} className={`bg-white shadow-md rounded-lg px-4 py-3 w-10/12 my-20 ${height <=  700 ? 'py-2' :  ''} `}>
            {/* <Text className="text-2xl font-medium text-red-400 text-center" >Sign Up</Text> */}

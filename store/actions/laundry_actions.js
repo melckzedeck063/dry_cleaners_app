@@ -3,6 +3,7 @@ import { BASE_URL } from "../URL";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import *  as SecureStore  from 'expo-secure-store';
+import { addNotification } from "../reducers/notification_reducer";
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
@@ -19,7 +20,7 @@ LAUNDRY_API.interceptors.request.use(async(req)  =>{
 })
 
 
-export const createLaundry = createAsyncThunk('new/laundry', async(values) => {
+export const createLaundry = createAsyncThunk('new/laundry', async(values, {dispatch}) => {
     try{
         const response =  await LAUNDRY_API.post('/new_laundry', {
             laundryName :  values.laundryName,
@@ -28,14 +29,17 @@ export const createLaundry = createAsyncThunk('new/laundry', async(values) => {
             email : values.email,
             telephone : values.telephone,
             photo :  values.photo,
-            category :  values.category
+            category :  values.category,
+            geo : values.geo
         })
 
         // console.log(response.data);
+        dispatch(addNotification({message : "New laundry registered successfully", type : "success"}))
         return response.data
     }
     catch(error){
         console.log(error);
+        dispatch(addNotification({message : "Request failed please  try again", type : "error"}))
         return error.message
     }
 })

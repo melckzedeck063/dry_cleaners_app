@@ -3,6 +3,7 @@ import axios from 'axios';
 import { AUTH_URL,BASE_URL } from '../URL';
 import *  as SecureStore from 'expo-secure-store'
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { addNotification } from '../reducers/notification_reducer';
 
 axios.defaults.headers.post['Content-Type'] = "application/json";
 
@@ -20,7 +21,7 @@ AUTH_API.interceptors.request.use(async (req) => {
 })
 
 
-export const signInUser = createAsyncThunk ("user/login", async (values) => {
+export const signInUser = createAsyncThunk ("user/login", async (values,{dispatch}) => {
     // console.log("values : " , values)
     try{
         const  response =   await  axios.post(`${BASE_URL}/user/login`, {
@@ -29,15 +30,17 @@ export const signInUser = createAsyncThunk ("user/login", async (values) => {
         })
         console.log(response.data)
         await SecureStore.setItemAsync('token', JSON.stringify(response.data))
+        dispatch(addNotification({message: "Successfull loged in" ,  type : "success"}))
          return  response.data
     }
     catch(error){
         console.log(error)
+        dispatch(addNotification({message: "Request failed please try again" ,  type : "error"}))
         return  error.message
     }
 })
 
-export const  signUpUser =  createAsyncThunk ('user/signup', async(values) => {
+export const  signUpUser =  createAsyncThunk ('user/signup', async(values,{dispatch}) => {
     try  {
 
         const response =  await axios.post(`${BASE_URL}/user/signup`, {
@@ -51,10 +54,12 @@ export const  signUpUser =  createAsyncThunk ('user/signup', async(values) => {
         })
         // console.log("called");
         // console.log(response.data);
+        dispatch(addNotification({message: "Successfull created new account" ,  type : "success"}))
         return response.data
     }
     catch(error){
         console.log(error)
+        dispatch(addNotification({message: "Request failed please try again" ,  type : "error"}))
         console.log(error.response.data)
     }
 })
